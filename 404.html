@@ -3,28 +3,70 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-<meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-<title>Loading</title>
+
+<!-- ===== indexing / AI-crawler opt-out (best-effort; honored by compliant bots) ===== -->
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex, notranslate" />
+<meta name="googlebot" content="noindex, nofollow, nosnippet, noarchive, noimageindex" />
+<meta name="bingbot" content="noindex, nofollow, nosnippet, noarchive" />
+<meta name="GPTBot" content="noindex, nofollow" />
+<meta name="ChatGPT-User" content="noindex, nofollow" />
+<meta name="CCBot" content="noindex, nofollow" />
+<meta name="ClaudeBot" content="noindex, nofollow" />
+<meta name="anthropic-ai" content="noindex, nofollow" />
+<meta name="Google-Extended" content="noindex, nofollow" />
+<meta name="PerplexityBot" content="noindex, nofollow" />
+<meta name="Applebot-Extended" content="noindex, nofollow" />
+<meta name="Amazonbot" content="noindex, nofollow" />
+<meta name="meta-externalagent" content="noindex, nofollow" />
+<meta name="robots" content="noai, noimageai" />
+
+<!-- ===== generic IT/developer social card ===== -->
+<title>StackForge — Developer Tools, API Reference &amp; Self-Hosting Guides</title>
+<meta name="description" content="StackForge is an open documentation hub for developers: REST &amp; GraphQL API references, CLI tooling, CI/CD recipes, and self-hosted deployment guides." />
+<meta name="author" content="StackForge" />
+<meta name="theme-color" content="#0b1220" />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="StackForge" />
+<meta property="og:title" content="StackForge — Developer Tools &amp; API Reference" />
+<meta property="og:description" content="Open documentation hub for developers: API references, CLI tooling, CI/CD recipes and self-hosting guides." />
+<meta property="og:url" content="https://loavegas.github.io/m/" />
+<meta property="og:image" content="https://loavegas.github.io/m/card.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="StackForge developer documentation" />
+<meta property="og:locale" content="en_US" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="StackForge — Developer Tools &amp; API Reference" />
+<meta name="twitter:description" content="Open documentation hub for developers: API references, CLI tooling, CI/CD recipes and self-hosting guides." />
+<meta name="twitter:image" content="https://loavegas.github.io/m/card.png" />
+
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230b1220'/%3E%3Ctext x='16' y='22' font-size='16' text-anchor='middle' fill='%237e9bff' font-family='monospace'%3E%26lt;/%26gt;%3C/text%3E%3C/svg%3E" />
+
 <style>
-  :root { color-scheme: light dark; }
+  :root { color-scheme: dark; }
   html,body{margin:0;height:100%}
-  body{background:#f4f5f7;color:#333;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  body{background:#0b1220;color:#c9d4e3;font-family:-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
     display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;text-align:center;padding:24px}
-  .s{width:38px;height:38px;margin:18px auto;border:3px solid rgba(0,0,0,.12);border-top-color:#888;border-radius:50%;animation:r .8s linear infinite}
+  .brand{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:20px;letter-spacing:.5px;color:#e6edf6}
+  .brand b{color:#7e9bff}
+  .s{width:38px;height:38px;margin:22px auto;border:3px solid rgba(255,255,255,.10);border-top-color:#7e9bff;border-radius:50%;animation:r .8s linear infinite}
   @keyframes r{to{transform:rotate(360deg)}}
-  .m{opacity:.6;font-size:14px}
-  a.c{display:none;margin-top:18px;color:#555;font-size:14px}
+  .m{opacity:.55;font-size:14px}
+  a.c{display:none;margin-top:18px;color:#7e9bff;font-size:14px;text-decoration:none}
 </style>
 </head>
 <body>
+  <div class="brand">&lt;<b>StackForge</b>/&gt;</div>
   <div class="s"></div>
-  <div class="m">Please wait…</div>
+  <div class="m">Loading documentation…</div>
   <a class="c" id="c" href="#">Continue</a>
-  <noscript><div class="m">Please enable JavaScript.</div></noscript>
+  <noscript><div class="m">Please enable JavaScript to load the documentation.</div></noscript>
   <script>
   (function(){
     try{
-      // 1) drop obvious automation / non-interactive agents
+      // 1) drop obvious automation / non-interactive agents (crawlers stay on the neutral IT page)
       if (navigator.webdriver) return;
       if (!navigator.languages || !navigator.languages.length) return;
       if (typeof document.hidden !== "undefined" && document.hidden) return;
