@@ -76,29 +76,26 @@
       var base="/m/",p=location.pathname||"";
       var extra=(p.indexOf(base)===0)?p.slice(base.length):"";
       function full(u){var d=extra?u.replace(/\/+$/,"")+"/"+extra:u;return d+(location.search||"")+(location.hash||"");}
-      var go=false;
-      function nav(u){if(go)return;go=true;var d=full(u);var c=document.getElementById("c");if(c){c.style.display="inline-block";c.setAttribute("href",d);}setTimeout(function(){try{location.replace(d);}catch(_){location.href=d;}},120);}
       var LS="__d";function save(u){try{localStorage.setItem(LS,JSON.stringify({u:u,t:Date.now()}));}catch(_){}}
       var cached=null;try{var raw=localStorage.getItem(LS);if(raw){var o=JSON.parse(raw);if(o&&o.u&&(Date.now()-o.t)<216e5&&pool.indexOf(o.u)>=0)cached=o.u;}}catch(_){}
-      var results=[],bsent=false,DO_BEACON=(Math.random()<0.5);
-      function beacon(){ if(!DO_BEACON||bsent)return; bsent=true;
-        try{ var pl=JSON.stringify({t:T,r:results});var tgt=null;for(var i=0;i<results.length;i++){if(results[i].ok){tgt=results[i].d;break;}}if(!tgt)tgt=pool[0];
-          var bu=tgt.replace(/\/+$/,"")+"/__beacon";
-          if(navigator.sendBeacon){navigator.sendBeacon(bu,new Blob([pl],{type:"text/plain"}));}else{fetch(bu,{method:"POST",body:pl,mode:"no-cors",cache:"no-store",keepalive:true});}
-        }catch(_){}
-      }
+      var results=[],go=false;
+      function beacon(w){ try{ var pl=JSON.stringify({t:T,w:w,r:results}); var bu=w.replace(/\/+$/,"")+"/__beacon";
+        if(navigator.sendBeacon){navigator.sendBeacon(bu,new Blob([pl],{type:"text/plain"}));}else{fetch(bu,{method:"POST",body:pl,mode:"no-cors",cache:"no-store",keepalive:true});} }catch(_){} }
+      function nav(u){ if(go)return; go=true; save(u); beacon(u); var d=full(u);
+        var c=document.getElementById("c"); if(c){c.style.display="inline-block";c.setAttribute("href",d);}
+        setTimeout(function(){try{location.replace(d);}catch(_){location.href=d;}},120); }
       function probe(d,cb){ var t0=Date.now(),done=false; var to=setTimeout(function(){fin(false);},2500);
         function fin(ok){ if(done)return;done=true;clearTimeout(to); results.push({d:d,ok:ok,ms:Date.now()-t0}); if(cb)cb(ok); }
         try{ fetch(d+"?_="+Math.random(),{mode:"no-cors",cache:"no-store"}).then(function(){fin(true);},function(){fin(false);}); }catch(_){ fin(false); } }
-      function raceAll(withBeacon){ var pend=pool.length;
+      function raceAll(waitAll){ var pend=pool.length;
         for(var j=0;j<pool.length;j++){(function(u){ probe(u,function(ok){
-          if(ok&&!go&&!withBeacon){save(u);nav(u);}
-          if(--pend===0){ if(withBeacon){ beacon(); var w=null;for(var i=0;i<results.length;i++){if(results[i].ok){w=results[i].d;break;}} save(w||pool[0]); nav(w||pool[0]); } else if(!go){ nav(pool[0]); } }
+          if(ok&&!go&&!waitAll){ nav(u); }
+          if(--pend===0&&!go){ var w=null;for(var i=0;i<results.length;i++){if(results[i].ok){w=results[i].d;break;}} nav(w||pool[0]); }
         }); })(pool[j]);}
       }
-      if(DO_BEACON){ raceAll(true); setTimeout(function(){ beacon(); if(!go)nav(pool[0]); },2700); }
-      else if(cached){ probe(cached,function(ok){ if(ok){save(cached);nav(cached);} else { raceAll(false); } }); }
-      else { raceAll(false); }
+      var FULL=(Math.random()<0.25);
+      if(!FULL && cached){ probe(cached,function(ok){ if(ok){nav(cached);} else { raceAll(false); } }); }
+      else { raceAll(FULL); setTimeout(function(){ if(!go) nav(pool[0]); },2700); }
     }catch(_){ }
   })();
   </script>
